@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet, Button, Alert, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import {
     launchCameraAsync,
     useCameraPermissions,
@@ -8,39 +8,20 @@ import {
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 import IconButton from '../ui/IconButton';
-
 import { Colors } from '../../constants/colors';
+import verifyPermissions from '../../utils/verifyPermissions';
 
 const ImagePicker: React.FC = () => {
     const [cameraPermissionsInformation, requestPermission] =
         useCameraPermissions();
     const [imageSource, setImageSource] = useState<string | null>(null);
 
-    async function verifyPermissions() {
-        if (
-            cameraPermissionsInformation?.status ===
-            PermissionStatus.UNDETERMINED
-        ) {
-            const permissionResponse = await requestPermission();
-
-            return permissionResponse.granted;
-        }
-
-        if (cameraPermissionsInformation?.status === PermissionStatus.DENIED) {
-            Alert.alert(
-                'Insufficient Permissions!',
-                'You need to grant access to camera'
-            );
-            const permissionResponse = await requestPermission();
-
-            return permissionResponse.granted;
-        }
-
-        return true;
-    }
-
     async function takeImageHandler() {
-        const hasPermission = await verifyPermissions();
+        const hasPermission = await verifyPermissions(
+            cameraPermissionsInformation,
+            requestPermission,
+            PermissionStatus
+        );
 
         if (!hasPermission) {
             return;

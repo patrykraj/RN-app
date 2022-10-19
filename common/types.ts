@@ -1,4 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Location from 'expo-location';
+import * as Camera from 'expo-image-picker';
 
 export interface PlaceItemProps {
     place: object;
@@ -32,3 +34,16 @@ export interface InlineButtonProps {
 export interface IconButtonProps extends InlineButtonProps {
     children: string;
 }
+
+export type permissionInformationType =
+    | Location.LocationPermissionResponse
+    | Camera.PermissionResponse
+    | null;
+
+export type requestPermissionType =
+    | (() => Promise<Camera.PermissionResponse>)
+    | (() => Promise<Location.LocationPermissionResponse>);
+
+export type PermissionStatusType =
+    | typeof Camera.PermissionStatus
+    | typeof Location.PermissionStatus;

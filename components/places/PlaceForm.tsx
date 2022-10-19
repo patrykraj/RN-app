@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 
 import { Colors } from '../../constants/colors';
 import ImagePicker from './ImagePicker';
+import LocationPicker from './LocationPicker';
 
 const PlaceForm: React.FC = () => {
     const [enteredTitle, setEnteredTitle] = useState<string>('');
@@ -12,15 +13,18 @@ const PlaceForm: React.FC = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Title</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={handleEnteredTitle}
-                value={enteredTitle}
-            />
-            <ImagePicker />
-        </View>
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={styles.label}>Title</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={handleEnteredTitle}
+                    value={enteredTitle}
+                />
+                <ImagePicker />
+                <LocationPicker />
+            </View>
+        </ScrollView>
     );
 };
 
