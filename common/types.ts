@@ -10,9 +10,9 @@ export interface PlaceListProps {
 }
 
 export type LocationType = {
-    lat: number,
-    lng: number,
-}
+    lat: number;
+    lng: number;
+};
 
 export interface IPlace {
     title: string;
@@ -22,9 +22,13 @@ export interface IPlace {
     id: string;
 }
 
-export interface IconButtonProps {
+export interface InlineButtonProps {
     name: React.ComponentProps<typeof Ionicons>['name'];
     size: number;
     color: string | undefined;
     onPress: () => void;
+}
+
+export interface IconButtonProps extends InlineButtonProps {
+    children: string;
 }
