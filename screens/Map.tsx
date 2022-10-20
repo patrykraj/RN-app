@@ -3,8 +3,9 @@ import MapView, { Marker } from 'react-native-maps';
 
 import { initialRegion } from '../constants';
 import { Colors } from '../constants/colors';
+import { MapProps } from '../common/types';
 
-const Map: React.FC<any> = ({
+const Map: React.FC<MapProps> = ({
     handleLocateMap,
     userLocation,
     preview,

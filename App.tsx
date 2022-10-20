@@ -24,7 +24,7 @@ export default function App() {
                     }}
                 >
                     <Stack.Screen
-                        name="AllPlaces"
+                        name="Home"
                         component={AllPlaces}
                         options={({ navigation }) => ({
                             title: 'Your Favorite Places',
@@ -41,7 +41,7 @@ export default function App() {
                         })}
                     />
                     <Stack.Screen name="AddPlace" component={AddPlace} />
-                    <Stack.Screen name="ShowMap" component={Map} />
+                    <Stack.Screen name="Map" component={Map} />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import { MapEvent } from 'react-native-maps';
 
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
 import verifyPermissions from '../../utils/verifyPermissions';
-import { LocationType } from '../../common/types';
+import { LocationType, HomeScreenNavigationProp } from '../../common/types';
 import Map from '../../screens/Map';
 
 const LocationPicker: React.FC = () => {
     const [userLocation, setUserLocation] = useState<LocationType | null>(null);
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation<HomeScreenNavigationProp>();
     const [status, requestPermission] = Location.useForegroundPermissions();
 
     async function handleLocateUser() {
@@ -25,14 +26,13 @@ const LocationPicker: React.FC = () => {
 
         const location = await Location.getCurrentPositionAsync();
 
-        console.log(location);
         setUserLocation({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude
         });
     }
 
-    function handleSelectLocation(e: any) {
+    function handleSelectLocation(e: MapEvent) {
         const { latitude, longitude } = e.nativeEvent.coordinate;
 
         setUserLocation({
@@ -42,7 +42,7 @@ const LocationPicker: React.FC = () => {
     }
 
     function handleOpenMap() {
-        navigation.navigate('ShowMap', {
+        navigation.navigate('Map', {
             ...userLocation
         });
     }

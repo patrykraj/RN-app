@@ -1,6 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
 import * as Camera from 'expo-image-picker';
+import { MapEvent } from 'react-native-maps';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
 export type PlaceType = {
     title: string;
@@ -53,3 +56,30 @@ export type requestPermissionType =
 export type PermissionStatusType =
     | typeof Camera.PermissionStatus
     | typeof Location.PermissionStatus;
+
+export type HomeStackNavigatorParamList = {
+    Home: undefined;
+    AddPlace: undefined;
+    Map: {
+        latitude?: number | undefined;
+        longitude?: number | undefined;
+    };
+};
+
+export type HomeScreenNavigationProp =
+    NativeStackNavigationProp<HomeStackNavigatorParamList>;
+
+export interface MapProps {
+    handleLocateMap: (e: MapEvent<{}>) => void;
+    userLocation: LocationType | null;
+    preview: boolean;
+    route?: RouteProp<
+        {
+            params: {
+                latitude: number;
+                longitude: number;
+            };
+        },
+        'params'
+    >;
+}
