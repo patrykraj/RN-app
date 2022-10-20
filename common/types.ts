@@ -2,8 +2,14 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
 import * as Camera from 'expo-image-picker';
 
+export type PlaceType = {
+    title: string;
+    imageUri: string;
+    address: string;
+};
+
 export interface PlaceItemProps {
-    place: object;
+    place: PlaceType;
     onSelect?: () => void;
 }
 
@@ -12,8 +18,8 @@ export interface PlaceListProps {
 }
 
 export type LocationType = {
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
 };
 
 export interface IPlace {

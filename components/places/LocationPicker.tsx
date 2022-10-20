@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
 import verifyPermissions from '../../utils/verifyPermissions';
+import { LocationType } from '../../common/types';
+import Map from '../../screens/Map';
 
 const LocationPicker: React.FC = () => {
+    const [userLocation, setUserLocation] = useState<LocationType | null>(null);
+    const navigation = useNavigation<any>();
     const [status, requestPermission] = Location.useForegroundPermissions();
 
     async function handleLocateUser() {
@@ -18,14 +24,36 @@ const LocationPicker: React.FC = () => {
         if (!hasPermission) return;
 
         const location = await Location.getCurrentPositionAsync();
+
         console.log(location);
+        setUserLocation({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude
+        });
     }
 
-    function handleLocateMap() {}
+    function handleSelectLocation(e: any) {
+        const { latitude, longitude } = e.nativeEvent.coordinate;
+
+        setUserLocation({
+            latitude,
+            longitude
+        });
+    }
+
+    function handleOpenMap() {
+        navigation.navigate('ShowMap', {
+            ...userLocation
+        });
+    }
 
     return (
         <View>
-            <View style={styles.mapPreview}></View>
+            <Map
+                preview
+                handleLocateMap={handleSelectLocation}
+                userLocation={userLocation}
+            />
             <View style={styles.buttonsContainer}>
                 <IconButton
                     onPress={handleLocateUser}
@@ -36,7 +64,7 @@ const LocationPicker: React.FC = () => {
                     Locate User
                 </IconButton>
                 <IconButton
-                    onPress={handleLocateMap}
+                    onPress={handleOpenMap}
                     name="map"
                     size={16}
                     color={Colors.primary100}
@@ -51,15 +79,6 @@ const LocationPicker: React.FC = () => {
 export default LocationPicker;
 
 const styles = StyleSheet.create({
-    mapPreview: {
-        width: '100%',
-        height: 200,
-        marginVertical: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: Colors.primary100,
-        borderRadius: 4
-    },
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around'

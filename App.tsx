@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
+import Map from './screens/Map';
 import InlineButton from './components/ui/InlineButton';
 
 import { Colors } from './constants/colors';
@@ -40,6 +41,7 @@ export default function App() {
                         })}
                     />
                     <Stack.Screen name="AddPlace" component={AddPlace} />
+                    <Stack.Screen name="ShowMap" component={Map} />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

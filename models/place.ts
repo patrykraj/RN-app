@@ -16,7 +16,7 @@ export default class Place implements IPlace {
         this.title = title;
         this.imageUri = imageUri;
         this.address = address;
-        this.location = location; // { lat: 0.141241, lng: 127.121 }
+        this.location = location; // { latitude: 0.141241, longitude: 127.121 }
         this.id = new Date().toString() + Math.random().toString();
     }
 }

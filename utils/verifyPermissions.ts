@@ -3,8 +3,8 @@ import { Alert } from 'react-native';
 import {
     permissionInformationType,
     requestPermissionType,
-    PermissionStatusType,
-} from "../common/types";
+    PermissionStatusType
+} from '../common/types';
 
 async function verifyPermissions(
     permissionInformation: permissionInformationType,

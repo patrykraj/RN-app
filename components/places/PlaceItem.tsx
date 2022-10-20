@@ -6,7 +6,7 @@ import { PlaceItemProps } from '../../common/types';
 const PlaceItem: React.FC<PlaceItemProps> = ({
     place,
     onSelect
-}: any): JSX.Element => {
+}): JSX.Element => {
     return (
         <Pressable onPress={onSelect}>
             <Image source={{ uri: place.imageUri }} />
