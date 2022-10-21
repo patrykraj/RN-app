@@ -1,6 +1,6 @@
 export const initialRegion = {
-    latitude: 54.176126,
-    longitude: 23.058175,
+    latitude: 0,
+    longitude: 0,
     latitudeDelta: 0.0432,
     longitudeDelta: 0.0231
 };

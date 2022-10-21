@@ -1,47 +1,64 @@
+import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { MapEvent } from 'react-native-maps';
 
 import { initialRegion } from '../constants';
 import { Colors } from '../constants/colors';
-import { MapProps } from '../common/types';
+import { MapProps, LocationType } from '../common/types';
 
-const Map: React.FC<MapProps> = ({
-    handleLocateMap,
-    userLocation,
-    preview,
-    route
-}) => {
+const Map: React.FC<MapProps> = ({ userLocation, preview, route }) => {
+    const [selectedLocation, setSelectedLocation] =
+        useState<LocationType | null>(
+            route ? { ...route.params } : userLocation
+        );
+
+    useEffect(() => {
+        if (userLocation) setSelectedLocation(userLocation);
+    }, [userLocation]);
+
+    function handleSelectLocation(e: MapEvent) {
+        const { latitude, longitude } = e.nativeEvent.coordinate;
+
+        setSelectedLocation({
+            latitude,
+            longitude,
+            latitudeDelta: 0.0432,
+            longitudeDelta: 0.0231
+        });
+    }
+
+    let previewProps = {};
+    if (preview)
+        previewProps = {
+            pitchEnabled: false,
+            rotateEnabled: false,
+            zoomEnabled: false,
+            scrollEnabled: false
+        };
+
     return (
         <View style={preview ? styles.mapPreview : styles.Map}>
             <MapView
-                onPress={handleLocateMap}
+                onPress={preview ? () => {} : handleSelectLocation}
                 style={styles.Map}
-                initialRegion={initialRegion}
+                initialRegion={selectedLocation || initialRegion}
                 region={{
-                    latitude:
-                        route?.params?.latitude ||
-                        userLocation?.latitude ||
-                        initialRegion.latitude,
-                    longitude:
-                        route?.params?.longitude ||
-                        userLocation?.longitude ||
-                        initialRegion.longitude,
+                    latitude: selectedLocation?.latitude || 0,
+                    longitude: selectedLocation?.longitude || 0,
                     latitudeDelta: 0.0432,
                     longitudeDelta: 0.0231
                 }}
+                {...previewProps}
             >
-                <Marker
-                    coordinate={{
-                        latitude:
-                            route?.params?.latitude ||
-                            userLocation?.latitude ||
-                            initialRegion.latitude,
-                        longitude:
-                            route?.params?.longitude ||
-                            userLocation?.longitude ||
-                            initialRegion.longitude
-                    }}
-                />
+                {selectedLocation && (
+                    <Marker
+                        coordinate={{
+                            latitude: selectedLocation.latitude,
+                            longitude: selectedLocation.longitude
+                        }}
+                    />
+                )}
             </MapView>
         </View>
     );

@@ -4,6 +4,7 @@ import * as Camera from 'expo-image-picker';
 import { MapEvent } from 'react-native-maps';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
+import { LocationActivityType } from 'expo-location';
 
 export type PlaceType = {
     title: string;
@@ -23,6 +24,8 @@ export interface PlaceListProps {
 export type LocationType = {
     latitude: number;
     longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
 };
 
 export interface IPlace {
@@ -60,25 +63,19 @@ export type PermissionStatusType =
 export type HomeStackNavigatorParamList = {
     Home: undefined;
     AddPlace: undefined;
-    Map: {
-        latitude?: number | undefined;
-        longitude?: number | undefined;
-    };
+    Map: LocationType;
 };
 
 export type HomeScreenNavigationProp =
     NativeStackNavigationProp<HomeStackNavigatorParamList>;
 
 export interface MapProps {
-    handleLocateMap: (e: MapEvent<{}>) => void;
+    handleLocateMap?: (e: MapEvent<{}>) => void;
     userLocation: LocationType | null;
     preview: boolean;
     route?: RouteProp<
         {
-            params: {
-                latitude: number;
-                longitude: number;
-            };
+            params: LocationType;
         },
         'params'
     >;

@@ -6,7 +6,6 @@ import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import Map from './screens/Map';
 import InlineButton from './components/ui/InlineButton';
-
 import { Colors } from './constants/colors';
 
 const Stack = createNativeStackNavigator();
