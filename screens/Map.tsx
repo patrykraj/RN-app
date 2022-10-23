@@ -1,61 +1,67 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { MapEvent } from 'react-native-maps';
 
-import { initialRegion } from '../constants';
 import { Colors } from '../constants/colors';
 import { MapProps, LocationType } from '../common/types';
+import { LocationContext } from '../context';
 
-const Map: React.FC<MapProps> = ({ userLocation, preview, route }) => {
-    const [selectedLocation, setSelectedLocation] =
-        useState<LocationType | null>(
-            route ? { ...route.params } : userLocation
-        );
+const Map: React.FC<MapProps> = ({ preview }) => {
+    const { userLocation, setUserLocation } = useContext<{
+        userLocation: LocationType;
+        setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
+    }>(LocationContext);
+    const [selectedView, setSelectedView] =
+        useState<LocationType>(userLocation);
 
     useEffect(() => {
-        if (userLocation) setSelectedLocation(userLocation);
+        if (userLocation) {
+            setUserLocation(userLocation);
+            setSelectedView(userLocation);
+        }
     }, [userLocation]);
 
     function handleSelectLocation(e: MapEvent) {
         const { latitude, longitude } = e.nativeEvent.coordinate;
 
-        setSelectedLocation({
+        setUserLocation((prevState: LocationType) => ({
+            ...prevState,
             latitude,
             longitude,
-            latitudeDelta: 0.0432,
-            longitudeDelta: 0.0231
-        });
+            ...(prevState.initial && { initial: false })
+        }));
     }
 
-    let previewProps = {};
-    if (preview)
-        previewProps = {
-            pitchEnabled: false,
-            rotateEnabled: false,
-            zoomEnabled: false,
-            scrollEnabled: false
-        };
+    function handleSelectMapView(e: LocationType) {
+        const { latitude, longitude, latitudeDelta, longitudeDelta } = e;
+
+        setSelectedView({
+            latitude,
+            longitude,
+            latitudeDelta,
+            longitudeDelta
+        });
+    }
 
     return (
         <View style={preview ? styles.mapPreview : styles.Map}>
             <MapView
-                onPress={preview ? () => {} : handleSelectLocation}
+                onPress={preview ? undefined : handleSelectLocation}
+                onRegionChangeComplete={handleSelectMapView}
                 style={styles.Map}
-                initialRegion={selectedLocation || initialRegion}
                 region={{
-                    latitude: selectedLocation?.latitude || 0,
-                    longitude: selectedLocation?.longitude || 0,
-                    latitudeDelta: 0.0432,
-                    longitudeDelta: 0.0231
+                    latitude: selectedView.latitude,
+                    longitude: selectedView.longitude,
+                    latitudeDelta: selectedView.latitudeDelta,
+                    longitudeDelta: selectedView.longitudeDelta
                 }}
-                {...previewProps}
             >
-                {selectedLocation && (
+                {!userLocation.initial && (
                     <Marker
                         coordinate={{
-                            latitude: selectedLocation.latitude,
-                            longitude: selectedLocation.longitude
+                            latitude: userLocation.latitude,
+                            longitude: userLocation.longitude
                         }}
                     />
                 )}

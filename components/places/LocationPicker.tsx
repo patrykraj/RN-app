@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { useEffect, useContext } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 
-import { initialRegion } from '../../constants';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
 import verifyPermissions from '../../utils/verifyPermissions';
 import { HomeScreenNavigationProp, LocationType } from '../../common/types';
 import Map from '../../screens/Map';
+import { LocationContext } from '../../context';
 
 const LocationPicker: React.FC = () => {
-    const [userLocation, setUserLocation] =
-        useState<LocationType>(initialRegion);
+    const { userLocation, setUserLocation } = useContext<{
+        userLocation: LocationType;
+        setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
+    }>(LocationContext);
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [status, requestPermission] = Location.useForegroundPermissions();
 
@@ -25,14 +27,19 @@ const LocationPicker: React.FC = () => {
 
         if (!hasPermission) return;
 
-        const location = await Location.getCurrentPositionAsync();
+        try {
+            const location = await Location.getCurrentPositionAsync();
 
-        setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0432,
-            longitudeDelta: 0.0231
-        });
+            setUserLocation({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0432,
+                longitudeDelta: 0.0231,
+                initial: false
+            });
+        } catch (error) {
+            Alert.alert('Location permission disabled');
+        }
     }
 
     function handleOpenMap() {
@@ -48,7 +55,7 @@ const LocationPicker: React.FC = () => {
     }, []);
 
     let content = userLocation ? (
-        <Map userLocation={userLocation} preview />
+        <Map preview />
     ) : (
         <View style={styles.mapFallback}>
             <Text>Map preview not available.</Text>

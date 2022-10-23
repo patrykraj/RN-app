@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, Alert } from 'react-native';
 import {
     launchCameraAsync,
     useCameraPermissions,
@@ -27,14 +27,18 @@ const ImagePicker: React.FC = () => {
             return;
         }
 
-        const image = await launchCameraAsync({
-            allowsEditing: true,
-            aspect: [16, 9],
-            quality: 0.6
-        });
+        try {
+            const image = await launchCameraAsync({
+                allowsEditing: true,
+                aspect: [16, 9],
+                quality: 0.6
+            });
 
-        const { uri } = image as ImageInfo;
-        setImageSource(uri);
+            const { uri } = image as ImageInfo;
+            setImageSource(uri);
+        } catch (error) {
+            Alert.alert('Camera permission disabled');
+        }
     }
 
     let imagePreview = <Text>No image taken yet.</Text>;
