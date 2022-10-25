@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { View, StyleSheet, Image, Text, Alert } from 'react-native';
 import {
     launchCameraAsync,
@@ -10,12 +9,10 @@ import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import IconButton from '../ui/IconButton';
 import { Colors } from '../../constants/colors';
 import verifyPermissions from '../../utils/verifyPermissions';
-import { LocationContextType } from '../../common/types';
-import { LocationContext } from '../../context';
+import { useLocationContext } from '../../context';
 
 const ImagePicker: React.FC = () => {
-    const { imageUri, setImageUri } =
-        useContext<LocationContextType>(LocationContext);
+    const { imageUri, setImageUri } = useLocationContext();
     const [cameraPermissionsInformation, requestPermission] =
         useCameraPermissions();
 

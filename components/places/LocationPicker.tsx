@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
@@ -6,16 +6,12 @@ import * as Location from 'expo-location';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
 import verifyPermissions from '../../utils/verifyPermissions';
-import {
-    HomeScreenNavigationProp,
-    LocationContextType
-} from '../../common/types';
+import { HomeScreenNavigationProp } from '../../common/types';
 import Map from '../../screens/Map';
-import { LocationContext } from '../../context';
+import { useLocationContext } from '../../context';
 
 const LocationPicker: React.FC = () => {
-    const { userLocation, setUserLocation } =
-        useContext<LocationContextType>(LocationContext);
+    const { userLocation, setUserLocation } = useLocationContext();
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [status, requestPermission] = Location.useForegroundPermissions();
 

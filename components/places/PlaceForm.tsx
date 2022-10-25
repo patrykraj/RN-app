@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView, Alert } from 'react-native';
 import { GEO_API_KEY } from '@env';
 
@@ -8,13 +8,12 @@ import TitleInput from './TitleInput';
 import PlaceModel from '../../models/place';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
-import { LocationContextType, PlaceFormType } from '../../common/types';
-import { LocationContext } from '../../context';
+import { PlaceFormType } from '../../common/types';
+import { useLocationContext } from '../../context';
 
 const PlaceForm: React.FC<PlaceFormType> = ({ onSavePlace }) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const { userLocation, imageUri, locationTitle } =
-        useContext<LocationContextType>(LocationContext);
+    const { userLocation, imageUri, locationTitle } = useLocationContext();
 
     function prepareSaveData() {
         if (!locationTitle || !imageUri || userLocation.initial)

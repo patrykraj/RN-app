@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 
 import { Colors } from '../../constants/colors';
-import { LocationContext } from '../../context';
-import { LocationContextType } from '../../common/types';
+import { useLocationContext } from '../../context';
 
 const TitleInput: React.FC = () => {
-    const { locationTitle, setLocationTitle } =
-        useContext<LocationContextType>(LocationContext);
+    const { locationTitle, setLocationTitle } = useLocationContext();
 
     function handleEnteredTitle(text: string) {
         setLocationTitle(text);

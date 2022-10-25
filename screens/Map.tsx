@@ -1,16 +1,15 @@
-import { useState, useEffect, useContext, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { MapEvent } from 'react-native-maps';
 
 import { Colors } from '../constants/colors';
-import { MapProps, LocationType, LocationContextType } from '../common/types';
-import { LocationContext } from '../context';
+import { MapProps, LocationType } from '../common/types';
+import { useLocationContext } from '../context';
 import InlineButton from '../components/ui/InlineButton';
 
 const Map: React.FC<MapProps> = ({ navigation, preview }) => {
-    const { userLocation, setUserLocation } =
-        useContext<LocationContextType>(LocationContext);
+    const { userLocation, setUserLocation } = useLocationContext();
     const [selectedView, setSelectedView] =
         useState<LocationType>(userLocation);
 

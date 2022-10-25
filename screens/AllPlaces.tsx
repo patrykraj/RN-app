@@ -1,15 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import PlaceList from '../components/places/PlaceList';
-import { LocationContextType } from '../common/types';
-import { LocationContext } from '../context';
+import { useLocationContext } from '../context';
 import { fetchPlaces } from '../utils/database';
 
 function AllPlaces() {
-    const { savedLocations, setSavedLocations } =
-        useContext<LocationContextType>(LocationContext);
+    const { savedLocations, setSavedLocations } = useLocationContext();
 
     const isFocused = useIsFocused();
 
