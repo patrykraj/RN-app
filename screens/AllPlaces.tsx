@@ -1,15 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import PlaceList from '../components/places/PlaceList';
 import { LocationContextType } from '../common/types';
 import { LocationContext } from '../context';
+import { fetchPlaces } from '../utils/database';
 
 function AllPlaces() {
-    const { savedLocations } =
+    const { savedLocations, setSavedLocations } =
         useContext<LocationContextType>(LocationContext);
 
-    return <View style={styles.container}><PlaceList places={savedLocations} /></View>;
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        async function loadPlaces() {
+            const places = await fetchPlaces();
+            setSavedLocations(places);
+        }
+
+        if (isFocused) {
+            loadPlaces();
+        }
+    }, [isFocused]);
+
+    return (
+        <View style={styles.container}>
+            <PlaceList places={savedLocations} />
+        </View>
+    );
 }
 
 export default AllPlaces;
@@ -20,4 +39,4 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     }
-})
+});

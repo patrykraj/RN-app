@@ -63,9 +63,14 @@ export type HomeStackNavigatorParamList = {
 export type HomeScreenNavigationProp =
     NativeStackNavigationProp<HomeStackNavigatorParamList>;
 
+export type NavigationTypes = {
+    goBack: () => void;
+    setOptions: (arg: {}) => void;
+};
+
 export interface MapProps {
-    preview: boolean;
-    navigation?: any;
+    preview?: boolean;
+    navigation?: NavigationTypes;
 }
 
 export type LocationContextType = {
@@ -77,4 +82,8 @@ export type LocationContextType = {
     setLocationTitle: React.Dispatch<React.SetStateAction<string>>;
     setImageUri: React.Dispatch<React.SetStateAction<string>>;
     setSavedLocations: React.Dispatch<React.SetStateAction<IPlace[]>>;
+};
+
+export type PlaceFormType = {
+    onSavePlace: (arg: IPlace) => void;
 };

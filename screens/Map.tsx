@@ -46,13 +46,13 @@ const Map: React.FC<MapProps> = ({ navigation, preview }) => {
     }
 
     function navigateBack() {
-        navigation.goBack();
+        navigation?.goBack();
     }
 
     useLayoutEffect(() => {
         if (!preview) {
-            navigation.setOptions({
-                headerRight: ({ tintColor }: any) => (
+            navigation?.setOptions({
+                headerRight: ({ tintColor }: { tintColor: string }) => (
                     <InlineButton
                         name="save"
                         size={24}

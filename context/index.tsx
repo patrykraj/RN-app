@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { initialRegion } from '../constants';
 import { LocationType, LocationContextType, IPlace } from '../common/types';
 
@@ -40,5 +40,8 @@ const LocationProvider = ({ children }: { children: React.ReactNode }) => {
         </LocationContext.Provider>
     );
 };
+
+export const useLocationContext = () =>
+    useContext<LocationContextType>(LocationContext);
 
 export default LocationProvider;

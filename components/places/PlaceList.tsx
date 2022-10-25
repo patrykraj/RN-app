@@ -20,8 +20,8 @@ const PlaceList: React.FC<PlaceListProps> = ({ places }) => {
             <FlatList
                 numColumns={2}
                 columnWrapperStyle={{
-                  justifyContent: 'space-between',
-                  marginBottom: 15,
+                    justifyContent: 'space-between',
+                    marginBottom: 15
                 }}
                 data={places}
                 keyExtractor={(item) => item.id}
@@ -44,5 +44,5 @@ const styles = StyleSheet.create({
     },
     fallbackText: {
         fontSize: 16
-    },
+    }
 });

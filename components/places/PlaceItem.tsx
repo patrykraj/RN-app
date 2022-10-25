@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+    Dimensions
+} from 'react-native';
 
 import { PlaceItemProps } from '../../common/types';
 import { Colors } from '../../constants/colors';
@@ -25,12 +32,12 @@ const styles = StyleSheet.create({
     container: {
         maxWidth: Dimensions.get('window').width / 2,
         flex: 0.475,
-        backgroundColor: Colors.primary500,
+        backgroundColor: Colors.primary500
     },
     image: {
-      flex: 1,
-      borderBottomLeftRadius: 4,
-      borderTopLeftRadius: 4,
-      height: 160,
-    },
+        flex: 1,
+        borderBottomLeftRadius: 4,
+        borderTopLeftRadius: 4,
+        height: 160
+    }
 });

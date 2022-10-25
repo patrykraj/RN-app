@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, ScrollView, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { GEO_API_KEY } from '@env';
 
 import ImagePicker from './ImagePicker';
@@ -9,14 +8,13 @@ import TitleInput from './TitleInput';
 import PlaceModel from '../../models/place';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
-import { LocationContextType, HomeScreenNavigationProp } from '../../common/types';
+import { LocationContextType, PlaceFormType } from '../../common/types';
 import { LocationContext } from '../../context';
 
-const PlaceForm: React.FC = () => {
+const PlaceForm: React.FC<PlaceFormType> = ({ onSavePlace }) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const { userLocation, imageUri, locationTitle, setSavedLocations } =
+    const { userLocation, imageUri, locationTitle } =
         useContext<LocationContextType>(LocationContext);
-    const navigation = useNavigation<HomeScreenNavigationProp>();
 
     function prepareSaveData() {
         if (!locationTitle || !imageUri || userLocation.initial)
@@ -41,8 +39,7 @@ const PlaceForm: React.FC = () => {
                     longitude: userLocation.longitude
                 }
             );
-            setSavedLocations((prevState: any) => [...prevState, savedNewLocation]);
-            navigation.navigate("Home");
+            onSavePlace(savedNewLocation);
         } catch (error) {
             console.log(error);
         } finally {

@@ -8,10 +8,13 @@ import Map from './screens/Map';
 import InlineButton from './components/ui/InlineButton';
 import { Colors } from './constants/colors';
 import LocationProvider from './context';
+import useInitDatabase from './hooks';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+    useInitDatabase();
+
     return (
         <>
             <StatusBar style="dark" />
