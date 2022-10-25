@@ -1,28 +1,59 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, ScrollView, Alert } from 'react-native';
 
-import { Colors } from '../../constants/colors';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
+import TitleInput from './TitleInput';
+import PlaceModel from '../../models/place';
+import { Colors } from '../../constants/colors';
+import IconButton from '../ui/IconButton';
+import { LocationContextType } from '../../common/types';
+import { LocationContext } from '../../context';
+import { GEO_API_KEY } from '@env';
 
 const PlaceForm: React.FC = () => {
-    const [enteredTitle, setEnteredTitle] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const { userLocation, imageUri, locationTitle } =
+        useContext<LocationContextType>(LocationContext);
 
-    function handleEnteredTitle(text: string) {
-        setEnteredTitle(text);
+    function prepareSaveData() {
+        if(!locationTitle || !imageUri || userLocation.initial) return Alert.alert('Invalid data');
+        saveData();
+    }
+
+    async function saveData() {
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                `https://api.openweathermap.org/geo/1.0/reverse?lat=${userLocation.latitude}&lon=${userLocation.longitude}&limit=1&appid=${GEO_API_KEY}`
+            );
+            const data = await response.json();
+            const savedNewLocation = new PlaceModel(locationTitle, imageUri, `${data[0].name}, ${data[0].country}`, {latitude: userLocation.latitude, longitude: userLocation.longitude});
+            console.log(savedNewLocation);
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.label}>Title</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handleEnteredTitle}
-                    value={enteredTitle}
-                />
+                <TitleInput />
                 <ImagePicker />
                 <LocationPicker />
+                <IconButton
+                    name="add-circle-outline"
+                    size={18}
+                    color={Colors.accent500}
+                    onPress={prepareSaveData}
+                    disabled={loading}
+                    submit
+                >
+                    Submit
+                </IconButton>
             </View>
         </ScrollView>
     );
@@ -35,19 +66,5 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         paddingVertical: 20
-    },
-    input: {
-        marginVertical: 8,
-        paddingHorizontal: 4,
-        paddingVertical: 8,
-        fontSize: 16,
-        borderBottomColor: Colors.primary700,
-        borderBottomWidth: 2,
-        backgroundColor: Colors.primary100
-    },
-    label: {
-        color: Colors.primary50,
-        fontWeight: 'bold',
-        marginBottom: 4
     }
 });

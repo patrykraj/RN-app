@@ -7,12 +7,14 @@ import { Colors } from '../../constants/colors';
 const IconButton: React.FC<IconButtonProps> = ({
     onPress,
     children,
+    submit,
     ...rest
 }): JSX.Element => {
     return (
         <Pressable
             style={({ pressed }) => [
                 styles.container,
+                submit && styles.submitType,
                 pressed && styles.pressed
             ]}
             onPress={onPress}
@@ -46,5 +48,9 @@ const styles = StyleSheet.create({
     },
     pressed: {
         opacity: 0.7
+    },
+    submitType: {
+        marginTop: 25,
+        marginBottom: 15
     }
 });

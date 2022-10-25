@@ -1,8 +1,7 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Location from 'expo-location';
 import * as Camera from 'expo-image-picker';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export type PlaceType = {
     title: string;
@@ -29,9 +28,9 @@ export type LocationType = {
 
 export interface IPlace {
     title: string;
-    imageUri: string;
+    imageUri: string | null;
     address: string;
-    location: LocationType;
+    location: Partial<LocationType>;
     id: string;
 }
 
@@ -44,6 +43,8 @@ export interface InlineButtonProps {
 
 export interface IconButtonProps extends InlineButtonProps {
     children: string;
+    disabled?: boolean;
+    submit?: boolean;
 }
 
 export type permissionInformationType =
@@ -70,4 +71,14 @@ export type HomeScreenNavigationProp =
 
 export interface MapProps {
     preview: boolean;
+    navigation?: any;
 }
+
+export type LocationContextType = {
+    userLocation: LocationType;
+    locationTitle: string;
+    imageUri: string | null;
+    setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
+    setLocationTitle: React.Dispatch<React.SetStateAction<string>>;
+    setImageUri: React.Dispatch<React.SetStateAction<string | null>>;
+};

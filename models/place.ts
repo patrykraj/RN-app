@@ -2,16 +2,16 @@ import { LocationType, IPlace } from '../common/types';
 
 export default class Place implements IPlace {
     readonly title: string;
-    readonly imageUri: string;
+    readonly imageUri: string | null;
     readonly address: string;
-    readonly location: LocationType;
+    readonly location: Partial<LocationType>;
     readonly id: string;
 
     constructor(
         title: string,
-        imageUri: string,
+        imageUri: string | null,
         address: string,
-        location: LocationType
+        location: Partial<LocationType>
     ) {
         this.title = title;
         this.imageUri = imageUri;

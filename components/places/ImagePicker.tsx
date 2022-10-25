@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { View, StyleSheet, Image, Text, Alert } from 'react-native';
 import {
     launchCameraAsync,
@@ -10,11 +10,16 @@ import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import IconButton from '../ui/IconButton';
 import { Colors } from '../../constants/colors';
 import verifyPermissions from '../../utils/verifyPermissions';
+import {
+    LocationContextType
+} from '../../common/types';
+import { LocationContext } from '../../context';
 
 const ImagePicker: React.FC = () => {
+    const { imageUri, setImageUri } =
+        useContext<LocationContextType>(LocationContext);
     const [cameraPermissionsInformation, requestPermission] =
         useCameraPermissions();
-    const [imageSource, setImageSource] = useState<string | null>(null);
 
     async function takeImageHandler() {
         const hasPermission = await verifyPermissions(
@@ -35,7 +40,7 @@ const ImagePicker: React.FC = () => {
             });
 
             const { uri } = image as ImageInfo;
-            setImageSource(uri);
+            setImageUri(uri);
         } catch (error) {
             Alert.alert('Camera permission disabled');
         }
@@ -43,9 +48,9 @@ const ImagePicker: React.FC = () => {
 
     let imagePreview = <Text>No image taken yet.</Text>;
 
-    if (imageSource)
+    if (imageUri)
         imagePreview = (
-            <Image style={styles.image} source={{ uri: imageSource }} />
+            <Image style={styles.image} source={{ uri: imageUri }} />
         );
 
     return (

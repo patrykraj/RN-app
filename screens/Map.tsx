@@ -1,17 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { MapEvent } from 'react-native-maps';
 
 import { Colors } from '../constants/colors';
-import { MapProps, LocationType } from '../common/types';
+import { MapProps, LocationType, LocationContextType } from '../common/types';
 import { LocationContext } from '../context';
+import InlineButton from '../components/ui/InlineButton';
 
-const Map: React.FC<MapProps> = ({ preview }) => {
-    const { userLocation, setUserLocation } = useContext<{
-        userLocation: LocationType;
-        setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
-    }>(LocationContext);
+const Map: React.FC<MapProps> = ({ navigation, preview }) => {
+    const { userLocation, setUserLocation } =
+        useContext<LocationContextType>(LocationContext);
     const [selectedView, setSelectedView] =
         useState<LocationType>(userLocation);
 
@@ -29,6 +28,8 @@ const Map: React.FC<MapProps> = ({ preview }) => {
             ...prevState,
             latitude,
             longitude,
+            latitudeDelta: selectedView.latitudeDelta,
+            longitudeDelta: selectedView.longitudeDelta,
             ...(prevState.initial && { initial: false })
         }));
     }
@@ -44,10 +45,29 @@ const Map: React.FC<MapProps> = ({ preview }) => {
         });
     }
 
+    function navigateBack() {
+        navigation.goBack();
+    }
+
+    useLayoutEffect(() => {
+        if (!preview) {
+            navigation.setOptions({
+                headerRight: ({ tintColor }: any) => (
+                    <InlineButton
+                        name="save"
+                        size={24}
+                        color={tintColor}
+                        onPress={navigateBack}
+                    />
+                )
+            });
+        }
+    }, [navigation]);
+
     return (
         <View style={preview ? styles.mapPreview : styles.Map}>
             <MapView
-                onPress={preview ? undefined : handleSelectLocation}
+                onPress={preview ? () => {} : handleSelectLocation}
                 onRegionChangeComplete={handleSelectMapView}
                 style={styles.Map}
                 region={{

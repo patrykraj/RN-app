@@ -6,15 +6,16 @@ import * as Location from 'expo-location';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
 import verifyPermissions from '../../utils/verifyPermissions';
-import { HomeScreenNavigationProp, LocationType } from '../../common/types';
+import {
+    HomeScreenNavigationProp,
+    LocationContextType
+} from '../../common/types';
 import Map from '../../screens/Map';
 import { LocationContext } from '../../context';
 
 const LocationPicker: React.FC = () => {
-    const { userLocation, setUserLocation } = useContext<{
-        userLocation: LocationType;
-        setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
-    }>(LocationContext);
+    const { userLocation, setUserLocation } =
+        useContext<LocationContextType>(LocationContext);
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [status, requestPermission] = Location.useForegroundPermissions();
 

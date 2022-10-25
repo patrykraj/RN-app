@@ -1,24 +1,36 @@
 import React, { createContext, useState } from 'react';
 import { initialRegion } from '../constants';
-import { LocationType } from '../common/types';
+import { LocationType, LocationContextType } from '../common/types';
 
 export const initialState = {
     userLocation: initialRegion,
-    setUserLocation: () => {}
+    locationTitle: '',
+    imageUri: '',
+    setUserLocation: () => {},
+    setLocationTitle: () => {},
+    setImageUri: () => {}
 };
 
-export const LocationContext = createContext<{
-    userLocation: LocationType;
-    setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
-}>(initialState);
+export const LocationContext = createContext<LocationContextType>(initialState);
 
 const LocationProvider = ({ children }: { children: React.ReactNode }) => {
     const [userLocation, setUserLocation] = useState<LocationType>(
         initialState.userLocation
     );
+    const [locationTitle, setLocationTitle] = useState<string>('');
+    const [imageUri, setImageUri] = useState<string | null>(null);
 
     return (
-        <LocationContext.Provider value={{ userLocation, setUserLocation }}>
+        <LocationContext.Provider
+            value={{
+                userLocation,
+                locationTitle,
+                imageUri,
+                setUserLocation,
+                setLocationTitle,
+                setImageUri
+            }}
+        >
             {children}
         </LocationContext.Provider>
     );
