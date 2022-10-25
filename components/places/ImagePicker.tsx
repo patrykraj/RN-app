@@ -10,9 +10,7 @@ import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import IconButton from '../ui/IconButton';
 import { Colors } from '../../constants/colors';
 import verifyPermissions from '../../utils/verifyPermissions';
-import {
-    LocationContextType
-} from '../../common/types';
+import { LocationContextType } from '../../common/types';
 import { LocationContext } from '../../context';
 
 const ImagePicker: React.FC = () => {
@@ -35,7 +33,7 @@ const ImagePicker: React.FC = () => {
         try {
             const image = await launchCameraAsync({
                 allowsEditing: true,
-                aspect: [16, 9],
+                aspect: [3, 4],
                 quality: 0.6
             });
 

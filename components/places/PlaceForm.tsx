@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, ScrollView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { GEO_API_KEY } from '@env';
 
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
@@ -7,17 +9,18 @@ import TitleInput from './TitleInput';
 import PlaceModel from '../../models/place';
 import { Colors } from '../../constants/colors';
 import IconButton from '../ui/IconButton';
-import { LocationContextType } from '../../common/types';
+import { LocationContextType, HomeScreenNavigationProp } from '../../common/types';
 import { LocationContext } from '../../context';
-import { GEO_API_KEY } from '@env';
 
 const PlaceForm: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const { userLocation, imageUri, locationTitle } =
+    const { userLocation, imageUri, locationTitle, setSavedLocations } =
         useContext<LocationContextType>(LocationContext);
+    const navigation = useNavigation<HomeScreenNavigationProp>();
 
     function prepareSaveData() {
-        if(!locationTitle || !imageUri || userLocation.initial) return Alert.alert('Invalid data');
+        if (!locationTitle || !imageUri || userLocation.initial)
+            return Alert.alert('Invalid data');
         saveData();
     }
 
@@ -29,10 +32,19 @@ const PlaceForm: React.FC = () => {
                 `https://api.openweathermap.org/geo/1.0/reverse?lat=${userLocation.latitude}&lon=${userLocation.longitude}&limit=1&appid=${GEO_API_KEY}`
             );
             const data = await response.json();
-            const savedNewLocation = new PlaceModel(locationTitle, imageUri, `${data[0].name}, ${data[0].country}`, {latitude: userLocation.latitude, longitude: userLocation.longitude});
-            console.log(savedNewLocation);
+            const savedNewLocation = new PlaceModel(
+                locationTitle,
+                imageUri,
+                `${data[0].name}, ${data[0].country}`,
+                {
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude
+                }
+            );
+            setSavedLocations((prevState: any) => [...prevState, savedNewLocation]);
+            navigation.navigate("Home");
         } catch (error) {
-            console.log(error)
+            console.log(error);
         } finally {
             setLoading(false);
         }

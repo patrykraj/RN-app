@@ -16,17 +16,27 @@ const PlaceList: React.FC<PlaceListProps> = ({ places }) => {
     }
 
     return (
-        <FlatList
-            data={places}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <PlaceItem place={item} />}
-        />
+        <View style={styles.container}>
+            <FlatList
+                numColumns={2}
+                columnWrapperStyle={{
+                  justifyContent: 'space-between',
+                  marginBottom: 15,
+                }}
+                data={places}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <PlaceItem place={item} />}
+            />
+        </View>
     );
 };
 
 export default PlaceList;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     fallbackContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -34,5 +44,5 @@ const styles = StyleSheet.create({
     },
     fallbackText: {
         fontSize: 16
-    }
+    },
 });

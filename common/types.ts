@@ -3,14 +3,8 @@ import * as Location from 'expo-location';
 import * as Camera from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export type PlaceType = {
-    title: string;
-    imageUri: string;
-    address: string;
-};
-
 export interface PlaceItemProps {
-    place: PlaceType;
+    place: IPlace;
     onSelect?: () => void;
 }
 
@@ -28,7 +22,7 @@ export type LocationType = {
 
 export interface IPlace {
     title: string;
-    imageUri: string | null;
+    imageUri: string;
     address: string;
     location: Partial<LocationType>;
     id: string;
@@ -77,8 +71,10 @@ export interface MapProps {
 export type LocationContextType = {
     userLocation: LocationType;
     locationTitle: string;
-    imageUri: string | null;
+    imageUri: string;
+    savedLocations: IPlace[];
     setUserLocation: React.Dispatch<React.SetStateAction<LocationType>>;
     setLocationTitle: React.Dispatch<React.SetStateAction<string>>;
-    setImageUri: React.Dispatch<React.SetStateAction<string | null>>;
+    setImageUri: React.Dispatch<React.SetStateAction<string>>;
+    setSavedLocations: React.Dispatch<React.SetStateAction<IPlace[]>>;
 };

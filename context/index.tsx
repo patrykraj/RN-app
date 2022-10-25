@@ -1,14 +1,16 @@
 import React, { createContext, useState } from 'react';
 import { initialRegion } from '../constants';
-import { LocationType, LocationContextType } from '../common/types';
+import { LocationType, LocationContextType, IPlace } from '../common/types';
 
 export const initialState = {
     userLocation: initialRegion,
     locationTitle: '',
     imageUri: '',
+    savedLocations: [],
     setUserLocation: () => {},
     setLocationTitle: () => {},
-    setImageUri: () => {}
+    setImageUri: () => {},
+    setSavedLocations: () => {}
 };
 
 export const LocationContext = createContext<LocationContextType>(initialState);
@@ -18,7 +20,8 @@ const LocationProvider = ({ children }: { children: React.ReactNode }) => {
         initialState.userLocation
     );
     const [locationTitle, setLocationTitle] = useState<string>('');
-    const [imageUri, setImageUri] = useState<string | null>(null);
+    const [imageUri, setImageUri] = useState<string>('');
+    const [savedLocations, setSavedLocations] = useState<IPlace[]>([]);
 
     return (
         <LocationContext.Provider
@@ -26,9 +29,11 @@ const LocationProvider = ({ children }: { children: React.ReactNode }) => {
                 userLocation,
                 locationTitle,
                 imageUri,
+                savedLocations,
                 setUserLocation,
                 setLocationTitle,
-                setImageUri
+                setImageUri,
+                setSavedLocations
             }}
         >
             {children}
