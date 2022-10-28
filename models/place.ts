@@ -11,12 +11,13 @@ export default class Place implements IPlace {
         title: string,
         imageUri: string,
         address: string,
-        location: Partial<LocationType>
+        location: Partial<LocationType>,
+        id: string
     ) {
         this.title = title;
         this.imageUri = imageUri;
         this.address = address;
         this.location = location; // { latitude: 0.141241, longitude: 127.121 }
-        this.id = new Date().toString() + Math.random().toString();
+        this.id = id;
     }
 }

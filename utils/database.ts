@@ -36,7 +36,7 @@ export function insertPlace(place: IPlace) {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-                `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO places (title, imageUri, address, latitude, longitude) VALUES (?, ?, ?, ?, ?)`,
                 [
                     place.title,
                     place.imageUri,
@@ -45,10 +45,10 @@ export function insertPlace(place: IPlace) {
                     place.location.longitude
                 ],
                 (_, result) => {
-                    console.log(result);
                     resolve(result);
                 },
                 (_, error): any => {
+                    console.error(error)
                     reject(error);
                 }
             );
@@ -73,11 +73,45 @@ export function fetchPlaces() {
                                 dp.title,
                                 dp.imageUri,
                                 dp.address,
-                                dp.location
+                                {   
+                                    latitude: dp.latitude,
+                                    longitude: dp.longitude,
+                                },
+                                dp.id
                             )
                         );
                     }
                     resolve(places);
+                },
+                (_, error): any => {
+                    reject(error);
+                }
+            );
+        });
+    });
+
+    return promise;
+}
+
+export function fetchPlaceDetails(id: string) {
+    const promise = new Promise<IPlace>((resolve, reject) => {
+        database.transaction((tx) => {
+            tx.executeSql(
+                'SELECT * FROM places WHERE id = ?',
+                [id],
+                (_, result) => {
+                    const dbPlace = result.rows._array[0];
+                    const place = new Place(
+                        dbPlace.title,
+                        dbPlace.imageUri,
+                        dbPlace.address,
+                        {
+                            latitude: dbPlace.latitude,
+                            longitude: dbPlace.longitude
+                        },
+                        dbPlace.id
+                    );
+                    resolve(place);
                 },
                 (_, error): any => {
                     reject(error);

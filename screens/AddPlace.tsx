@@ -11,9 +11,13 @@ function AddPlace() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
 
     async function onSavePlace(place: IPlace) {
-        await insertPlace(place);
-        setSavedLocations((prevState) => [...prevState, place]);
-        navigation.navigate('Home');
+        try {
+            await insertPlace(place);
+            setSavedLocations((prevState) => [...prevState, place]);
+            navigation.navigate('Home');
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return <PlaceForm onSavePlace={onSavePlace} />;

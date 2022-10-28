@@ -7,16 +7,23 @@ import {
     View,
     Dimensions
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { PlaceItemProps } from '../../common/types';
 import { Colors } from '../../constants/colors';
+import { HomeScreenNavigationProp } from '../../common/types';
 
-const PlaceItem: React.FC<PlaceItemProps> = ({
-    place,
-    onSelect
-}): JSX.Element => {
+const PlaceItem: React.FC<PlaceItemProps> = ({ place }): JSX.Element => {
+    const navigation = useNavigation<HomeScreenNavigationProp>();
+
+    function displayPlace() {
+        navigation.navigate<any>('PlaceDetails', {
+            id: place.id
+        });
+    }
+
     return (
-        <Pressable style={styles.container} onPress={onSelect}>
+        <Pressable style={styles.container} onPress={displayPlace}>
             <Image style={styles.image} source={{ uri: place.imageUri }} />
             <View>
                 <Text>{place.title}</Text>

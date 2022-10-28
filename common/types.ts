@@ -58,6 +58,7 @@ export type HomeStackNavigatorParamList = {
     Home: undefined;
     AddPlace: undefined;
     Map: LocationType;
+    PlaceDetails?: undefined;
 };
 
 export type HomeScreenNavigationProp =

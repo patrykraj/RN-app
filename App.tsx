@@ -9,6 +9,7 @@ import InlineButton from './components/ui/InlineButton';
 import { Colors } from './constants/colors';
 import LocationProvider from './context';
 import useInitDatabase from './hooks';
+import PlaceDetails from './screens/PlaceDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,10 @@ export default function App() {
                         />
                         <Stack.Screen name="AddPlace" component={AddPlace} />
                         <Stack.Screen name="Map" component={Map} />
+                        <Stack.Screen
+                            name="PlaceDetails"
+                            component={PlaceDetails}
+                        />
                     </Stack.Navigator>
                 </NavigationContainer>
             </LocationProvider>
