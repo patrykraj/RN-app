@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { IPlace } from '../common/types';
+
+import { IPlace, RouteProps } from '../common/types';
 import { fetchPlaceDetails } from '../utils/database';
 
-const PlaceDetails: React.FC<any> = ({ route }) => {
+const PlaceDetails: React.FC<RouteProps> = ({ route }) => {
     const [place, setPlace] = useState<IPlace | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 

@@ -9,15 +9,14 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { PlaceItemProps } from '../../common/types';
+import { PlaceItemProps, HomeScreenNavigationProp } from '../../common/types';
 import { Colors } from '../../constants/colors';
-import { HomeScreenNavigationProp } from '../../common/types';
 
 const PlaceItem: React.FC<PlaceItemProps> = ({ place }): JSX.Element => {
     const navigation = useNavigation<HomeScreenNavigationProp>();
 
     function displayPlace() {
-        navigation.navigate<any>('PlaceDetails', {
+        navigation.navigate('PlaceDetails', {
             id: place.id
         });
     }

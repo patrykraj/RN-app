@@ -10,12 +10,12 @@ export function init() {
         database.transaction((tx) => {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS places (
-          id INTEGER PRIMARY KEY NOT NULL,
-          title TEXT NOT NULL,
-          imageUri TEXT NOT NULL,
-          address TEXT NOT NULL,
-          latitude REAL NOT NULL,
-          longitude REAL NOT NULL
+            id INTEGER PRIMARY KEY NOT NULL,
+            title TEXT NOT NULL,
+            imageUri TEXT NOT NULL,
+            address TEXT NOT NULL,
+            latitude REAL NOT NULL,
+            longitude REAL NOT NULL
         )`,
                 [],
                 (val) => {
