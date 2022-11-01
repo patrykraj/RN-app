@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
-import { IPlace, RouteProps } from '../common/types';
+import { IPlace, PlaceDetailsRouteProps } from '../common/types';
 import { fetchPlaceDetails } from '../utils/database';
 
-const PlaceDetails: React.FC<RouteProps> = ({ route }) => {
+const PlaceDetails: React.FC<PlaceDetailsRouteProps> = ({ route }) => {
     const [place, setPlace] = useState<IPlace | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -12,7 +12,7 @@ const PlaceDetails: React.FC<RouteProps> = ({ route }) => {
         setIsLoading(true);
 
         try {
-            const response = await fetchPlaceDetails(route.params.id);
+            const response = await fetchPlaceDetails(route?.params.id || null);
             setPlace(response);
         } catch (error) {
             console.error(error);

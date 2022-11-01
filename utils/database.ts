@@ -41,14 +41,14 @@ export function insertPlace(place: IPlace) {
                     place.title,
                     place.imageUri,
                     place.address,
-                    place.location.latitude,
-                    place.location.longitude
+                    place.location.latitude!,
+                    place.location.longitude!
                 ],
                 (_, result) => {
                     resolve(result);
                 },
                 (_, error): any => {
-                    console.error(error)
+                    console.error(error);
                     reject(error);
                 }
             );
@@ -73,9 +73,9 @@ export function fetchPlaces() {
                                 dp.title,
                                 dp.imageUri,
                                 dp.address,
-                                {   
+                                {
                                     latitude: dp.latitude,
-                                    longitude: dp.longitude,
+                                    longitude: dp.longitude
                                 },
                                 dp.id
                             )
@@ -93,7 +93,7 @@ export function fetchPlaces() {
     return promise;
 }
 
-export function fetchPlaceDetails(id: string) {
+export function fetchPlaceDetails(id: string | null) {
     const promise = new Promise<IPlace>((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(

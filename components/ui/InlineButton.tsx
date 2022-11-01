@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { InlineButtonProps } from '../../common/types';
 
@@ -12,5 +12,3 @@ const InlineButton: React.FC<InlineButtonProps> = ({ onPress, ...rest }) => {
 };
 
 export default InlineButton;
-
-const styles = StyleSheet.create({});

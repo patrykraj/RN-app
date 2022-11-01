@@ -37,7 +37,7 @@ const PlaceForm: React.FC<PlaceFormType> = ({ onSavePlace }) => {
                     latitude: userLocation.latitude,
                     longitude: userLocation.longitude
                 },
-                new Date().toString() + Math.random().toString(),
+                new Date().toString() + Math.random().toString()
             );
             onSavePlace(savedNewLocation);
         } catch (error) {

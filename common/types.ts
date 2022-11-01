@@ -41,18 +41,26 @@ export interface IconButtonProps extends InlineButtonProps {
     submit?: boolean;
 }
 
-export type permissionInformationType =
+export type PermissionInformationType =
     | Location.LocationPermissionResponse
     | Camera.PermissionResponse
     | null;
 
-export type requestPermissionType =
+export type RequestPermissionType =
     | (() => Promise<Camera.PermissionResponse>)
     | (() => Promise<Location.LocationPermissionResponse>);
 
 export type PermissionStatusType =
     | typeof Camera.PermissionStatus
     | typeof Location.PermissionStatus;
+
+export interface PlaceDetailsRouteProps {
+    route?: {
+        params: {
+            id: string;
+        };
+    };
+}
 
 export type HomeStackNavigatorParamList = {
     Home: undefined;

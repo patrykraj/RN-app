@@ -1,14 +1,14 @@
 import { Alert } from 'react-native';
 
 import {
-    permissionInformationType,
-    requestPermissionType,
+    PermissionInformationType,
+    RequestPermissionType,
     PermissionStatusType
 } from '../common/types';
 
 async function verifyPermissions(
-    permissionInformation: permissionInformationType,
-    requestPermission: requestPermissionType,
+    permissionInformation: PermissionInformationType,
+    requestPermission: RequestPermissionType,
     PermissionStatus: PermissionStatusType
 ) {
     if (permissionInformation?.status === PermissionStatus.UNDETERMINED) {
